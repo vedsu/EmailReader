@@ -103,10 +103,10 @@ def main():
     count_results = collection_clients.find(query)
     read_mail=0
     for docs in count_results:
-        if docs.get("status")!= 'unchecked':  # If status is False (unread)
+        if docs.get("status")== 'checked':  # If status is False (unread)
                     read_mail += 1
     st.write("Total Records:", total_mail)
-    st.write("Fresh Mails:",read_mail)
+    st.write("Processed Mails:",read_mail)
     st.write("------------------------------------------")
     menu = st.columns((4, 1, 1))
     with menu[2]:
