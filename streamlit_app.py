@@ -183,7 +183,7 @@ def extract_job_title(content):
 
 
 # Load configuration from YAML file
-with open('./.streamlit/config.yaml') as file:
+with open('./config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 # Initialize the authenticator
