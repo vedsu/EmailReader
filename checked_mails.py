@@ -120,7 +120,7 @@ def main():
         )
     with menu[0]:
         st.markdown(f"Page **{current_page}** of **{total_pages}** ")
-    skip_count = (current_page - 1) * batch_size if current_page>1 else 0
+    skip_count = ((current_page - 1) * batch_size if current_page>1 else 0)
     display(query, batch_size, skip_count)
 
 #@st.cache_resource(experimental_allow_widgets=True)
