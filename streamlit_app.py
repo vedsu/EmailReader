@@ -215,14 +215,14 @@ elif authentication_status == None:
 
 
 
-if __name__=='__main__':
-    current_time = datetime.datetime.now().time()
-    target_time_start = datetime.time(14, 0)
-    target_time_end = datetime.time(15, 0)
-    if target_time_start <= current_time < target_time_end:
-        t1 = threading.Thread(target=extract)
-        t1.start()
-        t1.join()
+# if __name__=='__main__':
+ current_time = datetime.datetime.now().time()
+ target_time_start = datetime.time(14, 0)
+ target_time_end = datetime.time(16, 0)
+ if target_time_start <= current_time < target_time_end:
+     t1 = threading.Thread(target=extract)
+     t1.start()
+     t1.join()
 
 
 
