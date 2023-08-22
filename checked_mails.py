@@ -29,7 +29,7 @@ collection_searchwords= db['Searchwords']
 read_mail=0
 def main():
     
-    st.subheader("Fresh Mails")    
+    st.subheader("Processed Mails")    
     if 'load_query' not in st.session_state:
         st.session_state['load_query'] = {}
     # Values to store query results, total number of mails and unchecked mails
