@@ -6,6 +6,8 @@ import re
 from dateutil import parser
 import unchecked_mails, checked_mails
 import datetime
+import threading
+import time
 
 
 
@@ -31,8 +33,21 @@ collection_clients = db["Emails"]
 collection_usersdetail = db['Users']
 collection_searchwords= db['Searchwords']
 
+def extract():
+    query = {}
+    results = collection_usersdetail.find(query)
+    for result in results:
+        emailid = result['emailid']
+        passwordid = result['password']
+        imap_server_id = result['imapserver']
+        if emailid:
+            input_extract(passwordid, imap_server_id, emailid)
+
+
 def home_page():
     st.subheader("Registered Users")
+    download_button =st.button("Click to download all emails")
+    
     # Query the collection and project emailid and username fields
     query = {}
     projection = {"emailid": 1, "username": 1, "_id": 0}
@@ -46,6 +61,16 @@ def home_page():
              f"Email ID: <span style='color: green;'>{result['emailid']}</span>", unsafe_allow_html=True)
         st.write("")
 
+    if download_button:
+        st.error("Downloading.........")
+        t1 = threading.Thread(target=extract)
+        t1.start()
+        t1.join()
+        st.success("**Downloading completed**")
+        st.write("**************************************************************")
+
+    
+    
     st.sidebar.subheader("Auto-Extract Emails")
     status=""
     passwordid=""
@@ -55,8 +80,8 @@ def home_page():
     if st.sidebar.button("Read Mails"):
     
         passwordid, imap_server_id = get_user_credentials(emailid)
-        
-        st.sidebar.write("User not found")
+        input_extract(passwordid, imap_server_id, emailid)
+def input_extract(passwordid, imap_server_id, emailid):
         # Connect to inbox
         try:
                 imap_server = imaplib.IMAP4_SSL(host=imap_server_id)
@@ -110,6 +135,7 @@ def home_page():
         collection_usersdetail.update_one(search_query, search_update)
         
         st.sidebar.write(status)
+        time.sleep(1)  # Introduce a 1-second delay
 
         try:
     
@@ -166,6 +192,7 @@ def home_page():
         # st.sidebar.write(status)
         
         st.sidebar.write(status)
+        time.sleep(1)
 
 
 def extract_job_title(content):
@@ -197,6 +224,8 @@ def get_user_credentials(emailid):
         user_data = collection_usersdetail.find_one({"emailid": emailid})
     except:
         st.sidebar.write("user not found")
+        time.sleep(1)
+        st.experimental_rerun()
     if user_data:
         passwordid = user_data.get("password")
         imap_server_id = user_data.get("imapserver")

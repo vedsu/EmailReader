@@ -1,7 +1,7 @@
 import streamlit as st
 import pymongo
 import math
-
+import time
 
 # Database connections
 @st.cache_resource
@@ -76,6 +76,7 @@ def main():
     if st.sidebar.button("Create"):
         collection_searchwords.insert_one({"keyword": search_word})
         st.sidebar.write("search word created")
+        time.sleep(1)
         st.experimental_rerun()
     if st.sidebar.button("Remove"):
         try:
@@ -84,6 +85,7 @@ def main():
             st.sidebar.write("search word removed")
         except:
             st.sidebar.write("search word doesnot exists")
+        time.sleep(1)
         st.experimental_rerun()
         
     st.sidebar.write("----------------------------------")
@@ -159,17 +161,19 @@ def display(query,batch_size, skip_count):
                     {"_id": doc["_id"]},
                     {"$set": {"info": new_info}})
                         st.success("Additional information updated successfully!")
+                        time.sleep(1)
                         st.experimental_rerun()
                     
                     read_checkbox_key = f"read_checkbox_{doc['_id']}"
-                    is_read = st.checkbox("Mark as Read", key=read_checkbox_key)    
+                    un_read = st.checkbox("Mark as Unread", key=read_checkbox_key)    
 
-                    if is_read:
+                    if un_read:
                         
                         collection_clients.update_one(
                     {"_id": doc["_id"]},
-                    {"$set": {"status": "checked"}})
+                    {"$set": {"status": "unchecked"}})
                         st.success("Status updated successfully!")
+                        time.sleep(1)
                         st.experimental_rerun()
                     
                     
@@ -181,6 +185,7 @@ def display(query,batch_size, skip_count):
                             st.success("Document deleted successfully.")
                         else:
                             st.error("Failed to delete document.")
+                        time.sleep(1)
                         st.experimental_rerun()
 
                 st.write("--------------------------------------------------------------------------")

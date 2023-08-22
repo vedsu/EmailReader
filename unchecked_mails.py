@@ -1,6 +1,7 @@
 import streamlit as st
 import pymongo
 import math
+import time
 
 
 # Database connections
@@ -76,14 +77,18 @@ def main():
     if st.sidebar.button("Create"):
         collection_searchwords.insert_one({"keyword": search_word})
         st.sidebar.write("search word created")
+        time.sleep(1)  # Introduce a 1-second delay
         st.experimental_rerun()
+    
     if st.sidebar.button("Remove"):
         try:
             # Delete the document with the specified keyword
             collection_searchwords.delete_one({"keyword": search_word})
             st.sidebar.write("search word removed")
+            time.sleep(1)  # Introduce a 1-second delay
         except:
             st.sidebar.write("search word doesnot exists")
+        time.sleep(1)  # Introduce a 1-second delay
         st.experimental_rerun()
         
     st.sidebar.write("----------------------------------")
