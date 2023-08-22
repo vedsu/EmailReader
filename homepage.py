@@ -5,6 +5,7 @@ import email
 import re
 from dateutil import parser
 import unchecked_mails, checked_mails
+import datetime
 
 
 
@@ -93,16 +94,21 @@ def home_page():
                             new_document = {"sender":message["from"], "reciever":message["to"] , "date":formatted_date ,
                             "subject":message["subject"], "description":content, "designations":designation,"emails":emails, "remark":remarks , "status":"unchecked", "info":""}
                             collection_clients.insert_one(new_document)
-                            status = "Emails inserted successfully into Database" 
+                            status = "updated" 
 
                     else: 
                             count+=1
                     if (count>0):
-                            status= "Inbox is already updated"
+                            status= "already updated"
 
         except imaplib.IMAP4.error:
-                    status = "Login failed. Please enter correct credentials."
+                    status = "failed."
 
+                # Update the corresponding document in 'collection_searchwords'
+        search_query = {"emailid": emailid}
+        search_update = {"$set": {"inbox": status}}  # Update the 'inbox' field with the status
+        collection_usersdetail.update_one(search_query, search_update)
+        
         st.sidebar.write(status)
 
         try:
@@ -142,16 +148,23 @@ def home_page():
                             new_document = {"sender":message["from"], "reciever":message["to"] , "date":formatted_date ,
                             "subject":message["subject"], "description":content, "designations":designation,"emails":emails, "remark":remarks , "status":"unchecked", "info":""}
                             collection_clients.insert_one(new_document)
-                            status = "Spam inserted successfully into Database" 
+                            status = "updated" 
 
                     else: 
                             count+=1
                 if (count>0):
-                            status= "Spam is already updated"
+                            status= "already updated"
 
         except imaplib.IMAP4.error:
-                    status = "Spam could not be extracted."
+                    status = "failed."
 
+        search_query = {"emailid": emailid}
+        current_time = datetime.datetime.now()
+        formatted_time = current_time.strftime("%H:%M:%S")
+        search_update = {"$set": {"spam": status, "lastupdated":formatted_time}}  # Update the 'inbox' field with the status
+        collection_usersdetail.update_one(search_query, search_update)
+        # st.sidebar.write(status)
+        
         st.sidebar.write(status)
 
 
