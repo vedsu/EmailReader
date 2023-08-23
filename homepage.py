@@ -10,6 +10,9 @@ import threading
 import time
 import pandas as pd
 from io import BytesIO
+from xlsxwriter.workbook import Workbook
+
+
 
 
 
@@ -245,7 +248,7 @@ def get_user_credentials(emailid):
     
         st.experimental_rerun()
 
-
+@st.cache
 def export_to_excel():
     # Create a new Excel workbook
     
