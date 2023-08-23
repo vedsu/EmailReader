@@ -260,6 +260,9 @@ def export_to_excel():
     # Convert data to a DataFrame
     df = pd.DataFrame(data)
     df.sort_values(by='date', inplace=True, ascending=False)
+    df['date'] = pd.to_datetime(df['date'], format='%d %b %Y')
+    df["date"] = df["date"].dt.strftime("%Y-%m-%d")
+    df = df.sort_values(by='date', ascending=False)
 
     # Display the DataFrame (optional)
     st.write(df)
