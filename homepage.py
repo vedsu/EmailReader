@@ -278,7 +278,8 @@ def export_to_excel():
         label='Download Excel File',
         data=excel_file,
         file_name='email_data.xlsx',
-        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        key="download_button"
     )
     
 
