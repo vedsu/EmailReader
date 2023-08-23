@@ -29,7 +29,7 @@ collection_searchwords= db['Searchwords']
 read_mail=0
 def main():
     
-    st.subheader("Processed Mails")    
+    st.subheader("Fresh Mails")    
     if 'load_query' not in st.session_state:
         st.session_state['load_query'] = {}
     # Values to store query results, total number of mails and unchecked mails
@@ -90,9 +90,9 @@ def main():
         
     st.sidebar.write("----------------------------------")
     # Display predefined items in the sidebar as clickable buttons
-    for index, item in enumerate(predefined_items):
-       button_key = f"button_{index}"  # Generate a unique key for each button
-       if st.sidebar.button(item, key=button_key): 
+    for item in predefined_items:
+        # item_search = st.sidebar.button(item)
+        if st.sidebar.button(item):
             # Create the query using $text operator
             query = {"$or": [{"subject": {"$regex": item, "$options": "i"}},
         {"description": {"$regex": item, "$options": "i"}}]}
@@ -106,7 +106,7 @@ def main():
         if docs.get("status")!= 'unchecked':  # If status is False (unread)
                     read_mail += 1
     st.write("Total Records:", total_mail)
-    st.write("Processed Mails:",read_mail)
+    st.write("Fresh Mails:",read_mail)
     st.write("------------------------------------------")
     menu = st.columns((4, 1, 1))
     with menu[2]:
@@ -120,7 +120,7 @@ def main():
         )
     with menu[0]:
         st.markdown(f"Page **{current_page}** of **{total_pages}** ")
-    skip_count = ((current_page - 1) * batch_size if current_page>1 else 0)
+    skip_count = (current_page - 1) * batch_size if current_page>1 else 0
     display(query, batch_size, skip_count)
 
 #@st.cache_resource(experimental_allow_widgets=True)
@@ -141,12 +141,12 @@ def display(query,batch_size, skip_count):
                 st.write("Sender:", doc.get("sender"))
                 st.write("Subject:", doc.get("subject"))
                 st.write("Emails:", doc.get("emails"))
-                st.write("Job Titles:", doc.get("designations"))
+                st.write("Job Titles:", doc.get("jobtitle"))
                 st.write("Remarks:", doc.get('remark'))
                 with st.expander(" View Details"):
                     st.write("Content:", doc.get("description"))
                     
-                    additional_info = st.text_area("Additional Information:",doc.get("info"),height=100,key=f"additional_info_{doc['_id']}")
+                    additional_info = st.text_area("Additional Information:",doc.get("comments"),height=100,key=f"additional_info_{doc['_id']}")
                     # option=["Unchecked", "checked"]
                     
                     # Checkbox to mark email as Read
@@ -159,7 +159,7 @@ def display(query,batch_size, skip_count):
                     # Update the additional information field in the MongoDB document
                         collection_clients.update_one(
                     {"_id": doc["_id"]},
-                    {"$set": {"info": new_info}})
+                    {"$set": {"comments": new_info}})
                         st.success("Additional information updated successfully!")
                         time.sleep(1)
                         st.experimental_rerun()

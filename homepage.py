@@ -49,9 +49,9 @@ def home_page():
     st.subheader("Registered Users")
     col1, col2 = st.columns(2)
     with col1:
-       download_button = st.button("Click to download all emails")
+        download_button =st.button("Click to download all emails")
     with col2:
-       generate_button = st.button("Export to excel")
+        generate_button = st.button("Export to excel")
     
     # Query the collection and project emailid and username fields
     query = {}
@@ -65,7 +65,7 @@ def home_page():
                  f"<span style='margin-right: 10px;'></span>"
              f"Email ID: <span style='color: green;'>{result['emailid']}</span>", unsafe_allow_html=True)
         st.write("")
-
+    
     if download_button:
         st.error("Downloading.........")
         t1 = threading.Thread(target=extract)
@@ -78,22 +78,19 @@ def home_page():
         export_to_excel()
         st.write("**************************************************************")
 
-
-
-   
-
     
     
     st.sidebar.subheader("Auto-Extract Emails")
-    status=""
     passwordid=""
     imap_server_id=""
-
     emailid = st.sidebar.text_input("Enter Email Id")
     if st.sidebar.button("Read Mails"):
     
         passwordid, imap_server_id = get_user_credentials(emailid)
         input_extract(passwordid, imap_server_id, emailid)
+
+
+        
 def input_extract(passwordid, imap_server_id, emailid):
         # Connect to inbox
         try:
@@ -241,8 +238,9 @@ def get_user_credentials(emailid):
     except:
         st.sidebar.write("user not found")
         time.sleep(1)
-        
+    
         st.experimental_rerun()
+
 
 def export_to_excel():
     # Create a new Excel workbook
@@ -268,9 +266,6 @@ def export_to_excel():
                 file_name=excel_filename,
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             )
-
-
-
 
 
 def main():
