@@ -9,6 +9,8 @@ import datetime
 import threading
 import time
 import pandas as pd
+from io import BytesIO
+import xlsxwriter 
 
 
 
@@ -257,17 +259,27 @@ def export_to_excel():
 
     # Display the DataFrame (optional)
     st.write(df)
-    excel_filename = "database_email.xlsx"
-    df.to_excel(excel_filename, index=False)
-    st.write(f"Excel file '{excel_filename}' generated! You can download it using the link below:")
-    with open(excel_filename, "rb") as f:
-            st.download_button(
-                label="Download Excel",
-                data=f,
-                file_name=excel_filename,
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            )
+    output = BytesIO()
 
+    # Create an Excel writer and write the DataFrame to it
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Sheet1')
+        workbook = writer.book
+        worksheet = writer.sheets['Sheet1']
+        format1 = workbook.add_format({'num_format': '0.00'}) 
+        worksheet.set_column('B:B', None, format1)  # Formatting the 'Age' column
+
+    # Get the value of the Excel file from the BytesIO object
+    excel_file = output.getvalue()
+
+    # Provide a download button
+    st.download_button(
+        label='Download Excel File',
+        data=excel_file,
+        file_name='email_data.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    
 
 def main():
         # Radio buttons to navigate between pages
