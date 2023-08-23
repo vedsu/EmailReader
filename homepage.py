@@ -8,6 +8,7 @@ import unchecked_mails, checked_mails
 import datetime
 import threading
 import time
+import pandas
 
 
 
@@ -46,7 +47,11 @@ def extract():
 
 def home_page():
     st.subheader("Registered Users")
-    download_button =st.button("Click to download all emails")
+    col1, col2 = st.columns(2)
+    with col1:
+       download_button = st.button("Click to download all emails")
+    with col2:
+       generate_button = st.button("Export to excel")
     
     # Query the collection and project emailid and username fields
     query = {}
@@ -68,6 +73,14 @@ def home_page():
         t1.join()
         st.success("**Downloading completed**")
         st.write("**************************************************************")
+
+    if generate_button:
+        export_to_excel()
+        st.write("**************************************************************")
+
+
+
+   
 
     
     
@@ -117,7 +130,7 @@ def input_extract(passwordid, imap_server_id, emailid):
                             designation, emails, remarks = list(set(d)),list(set(e)),list(set(r))
  
                             new_document = {"sender":message["from"], "reciever":message["to"] , "date":formatted_date ,
-                            "subject":message["subject"], "description":content, "designations":designation,"emails":emails, "remark":remarks , "status":"unchecked", "info":""}
+                            "subject":message["subject"], "description":content, "jobtitle":designation,"emails":emails, "remark":remarks , "status":"unchecked", "comments":""}
                             collection_clients.insert_one(new_document)
                             status = "updated" 
 
@@ -172,7 +185,7 @@ def input_extract(passwordid, imap_server_id, emailid):
                             designation, emails, remarks = list(set(d)),list(set(e)),list(set(r))
 
                             new_document = {"sender":message["from"], "reciever":message["to"] , "date":formatted_date ,
-                            "subject":message["subject"], "description":content, "designations":designation,"emails":emails, "remark":remarks , "status":"unchecked", "info":""}
+                            "subject":message["subject"], "description":content, "jobtitle":designation,"emails":emails, "remark":remarks , "status":"unchecked", "comments":""}
                             collection_clients.insert_one(new_document)
                             status = "updated" 
 
@@ -222,17 +235,43 @@ def extract_job_title(content):
 def get_user_credentials(emailid):
     try:
         user_data = collection_usersdetail.find_one({"emailid": emailid})
-    except:
-        st.sidebar.write("user not found")
-        time.sleep(1)
-        st.experimental_rerun()
-    if user_data:
         passwordid = user_data.get("password")
         imap_server_id = user_data.get("imapserver")
         return passwordid, imap_server_id
-    else:
-        return None, None
+    except:
+        st.sidebar.write("user not found")
+        time.sleep(1)
+        
+       st.experimental_rerun()
+
+def export_to_excel():
+    # Create a new Excel workbook
     
+    
+    query = {}
+    projection = {"date": 1, "sender": 1, "reciever":1, "subject":1, "emails":1, "remark":1, "comments":1, "_id": 0}
+    data = list(collection_clients.find(query, projection))
+    
+    # Convert data to a DataFrame
+    df = pd.DataFrame(data)
+    df.sort_values(by='date', inplace=True, ascending=False)
+
+    # Display the DataFrame (optional)
+    st.write(df)
+    excel_filename = "database_email.xlsx"
+    df.to_excel(excel_filename, index=False)
+    st.write(f"Excel file '{excel_filename}' generated! You can download it using the link below:")
+    with open(excel_filename, "rb") as f:
+            st.download_button(
+                label="Download Excel",
+                data=f,
+                file_name=excel_filename,
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+
+
+
+
 
 def main():
         # Radio buttons to navigate between pages
