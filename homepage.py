@@ -8,7 +8,7 @@ import unchecked_mails, checked_mails
 import datetime
 import threading
 import time
-import pandas
+import pandas as pd
 
 
 
