@@ -17,7 +17,7 @@ st.subheader("Welcome to Email Reader")
 def init_connection():
    
     try:
-        #client=pymongo.MongoClient("mongodb+srv://shubhamsrivastava:hzQ2IckGfmoJb4XS@emailreader.elzbauk.mongodb.net/")
+        
         db_username = st.secrets.db_username
         db_password = st.secrets.db_password
 
