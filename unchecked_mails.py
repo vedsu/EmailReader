@@ -93,8 +93,10 @@ def main():
         
     st.sidebar.write("----------------------------------")
     # Display predefined items in the sidebar as clickable buttons
-    for item in predefined_items:
-        # item_search = st.sidebar.button(item)
+    for index, item in enumerate(predefined_items):
+       # Your code here
+       button_key = f"button_{index}" 
+       # item_search = st.sidebar.button(item, key=button_key)
         if st.sidebar.button(item):
             # Create the query using $text operator
             query = {"$or": [{"subject": {"$regex": item, "$options": "i"}},
