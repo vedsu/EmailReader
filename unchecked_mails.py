@@ -97,7 +97,7 @@ def main():
        # Your code here
        button_key = f"button_{index}" 
        # item_search = st.sidebar.button(item, key=button_key)
-        if st.sidebar.button(item):
+       if st.sidebar.button(item):
             # Create the query using $text operator
             query = {"$or": [{"subject": {"$regex": item, "$options": "i"}},
         {"description": {"$regex": item, "$options": "i"}}]}
