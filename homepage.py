@@ -99,6 +99,10 @@ def home_page():
 
         
 def input_extract(passwordid, imap_server_id, emailid):
+    # Fetch the email status from the database
+    user_data = collection_usersdetail.find_one({"emailid": emailid})
+    email_status = user_data.get("status")
+    if email_status != "Inactive":
         # Connect to inbox
         try:
                 imap_server = imaplib.IMAP4_SSL(host=imap_server_id)
