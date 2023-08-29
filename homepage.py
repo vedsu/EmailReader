@@ -100,11 +100,13 @@ def home_page():
         
 def input_extract(passwordid, imap_server_id, emailid):
     # Fetch the email status from the database
-    st.sidebar.text(f"{emailid} extraction under progress")
+    st.sidebar.warning(f"{emailid} extraction under progress")
     user_data = collection_usersdetail.find_one({"emailid": emailid})
     email_status = user_data.get("status")
     if email_status == "Inactive":
-       st.sidebar.text(f"{emailid} is not active")
+       st.sidebar.error(f"{emailid} is not active")
+       time.sleep(1)
+       
     elif email_status != "Inactive":
         
         # Connect to inbox
