@@ -11,6 +11,7 @@ import time
 import pandas as pd
 from io import BytesIO
 from xlsxwriter.workbook import Workbook
+import pytz
 
 
 
@@ -212,7 +213,9 @@ def input_extract(passwordid, imap_server_id, emailid):
                     status = "failed."
 
         search_query = {"emailid": emailid}
-        current_time = datetime.datetime.now()
+        # Get the current time in the India time zone
+        india_time_zone = pytz.timezone('Asia/Kolkata')
+        current_time = datetime.datetime.now(india_time_zone)
         formatted_time = current_time.strftime("%H:%M:%S")
         search_update = {"$set": {"spam": status, "lastupdated":formatted_time}}  # Update the 'inbox' field with the status
         collection_usersdetail.update_one(search_query, search_update)
