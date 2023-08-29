@@ -103,9 +103,9 @@ def input_extract(passwordid, imap_server_id, emailid):
     st.sidebar.text(f"{emailid} extraction under progress")
     user_data = collection_usersdetail.find_one({"emailid": emailid})
     email_status = user_data.get("status")
-    if emailstatus == "Inactive":
+    if email_status == "Inactive":
        st.sidebar.text(f"{emailid} is not active")
-    if email_status != "Inactive":
+    elif email_status != "Inactive":
         
         # Connect to inbox
         try:
