@@ -4,7 +4,7 @@ import imaplib
 import email
 import re
 from dateutil import parser
-import unchecked_mails, checked_mails, freshmails, processedmails
+import  freshmails, processedmails
 from email.header import decode_header
 from datetime import timedelta
 import datetime
