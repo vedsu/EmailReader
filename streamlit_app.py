@@ -10,23 +10,23 @@ from yaml.loader import SafeLoader
 from streamlit_authenticator import Authenticate 
 import datetime
 #import home
-import homepage, homepageall, homepagelast5
+import homepagelast5
 st.subheader("Welcome to Email Reader")
 #Database connections
 @st.cache_resource
 def init_connection():
    
     try:
-        #client=pymongo.MongoClient("mongodb+srv://shubhamsrivastava:hzQ2IckGfmoJb4XS@emailreader.elzbauk.mongodb.net/")
-        # db_username = st.secrets.db_username
-        # db_password = st.secrets.db_password
+        
+        db_username = st.secrets.db_username
+        db_password = st.secrets.db_password
 
-        # mongo_uri_template = "mongodb+srv://{username}:{password}@emailreader.elzbauk.mongodb.net/"
-        # mongo_uri = mongo_uri_template.format(username=db_username, password=db_password)
+        mongo_uri_template = "mongodb+srv://{username}:{password}@emailreader.elzbauk.mongodb.net/"
+        mongo_uri = mongo_uri_template.format(username=db_username, password=db_password)
 
-        # client = pymongo.MongoClient(mongo_uri)
+        client = pymongo.MongoClient(mongo_uri)
 
-        client = pymongo.MongoClient("mongodb://localhost:27017")
+        # client = pymongo.MongoClient("mongodb://localhost:27017")
         
         return client
     
