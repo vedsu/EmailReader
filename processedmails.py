@@ -11,7 +11,7 @@ def init_connection():
         db_username = st.secrets.db_username
         db_password = st.secrets.db_password
 
-        mongo_uri_template = "mongodb+srv://{username}:{password}@emailreader.elzbauk.mongodb.net/"
+        mongo_uri_template = "mongodb+srv://{username}:{password}@emailreader.elzbauk.mongodb.net/")
         mongo_uri = mongo_uri_template.format(username=db_username, password=db_password)
 
         client = pymongo.MongoClient(mongo_uri)
