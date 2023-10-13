@@ -53,10 +53,10 @@ collection_searchwords= db['Searchwords']
 
 # Load configuration from YAML file
 config_file_path = "./config.yaml"
-    try:
+try:
         with open(config_file_path) as file:
             config = yaml.load(file, Loader=SafeLoader)
-    except Exception as e:
+except Exception as e:
         st.error(f"Error loading configuration file: {e}")
         st.stop()
 # with open('./config.yaml') as file:
