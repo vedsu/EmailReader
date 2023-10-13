@@ -16,7 +16,7 @@ def init_connection():
         # mongo_uri = mongo_uri_template.format(username=db_username, password=db_password)
 
         # client = pymongo.MongoClient(mongo_uri)
-        client=pymongo.MongoClient("mongodb+srv://Vedsu:CVxB6F2N700cQ0qu@cluster0.thbmwqi.mongodb.net/"
+        client=pymongo.MongoClient("mongodb+srv://Vedsu:CVxB6F2N700cQ0qu@cluster0.thbmwqi.mongodb.net/")
         return client
     except:
         st.write("Connection Could not be Established with database")# Database
