@@ -242,7 +242,7 @@ def input_extract(passwordid, imap_server_id, emailid, no_of_days):
                                     # Convert the list of matches to a single string, separated by a delimiter (e.g., comma)
                                     sender = ', '.join(sender_matches)
 
-                                    if(sender.split('@')[0].lower() != "mailer-daemon" and sender.split('@')[0].lower() != "postmaster"):
+                                    if(sender.split('@')[0].lower() != "mailer-daemon" and sender.split('@')[0].lower() != "postmaster" and sender.split('@')[0].lower() != "emailsecurity" and sender.split('@')[0].lower() != "bounce"):
                             
                                         # decode the email subject
                                         
