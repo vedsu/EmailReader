@@ -4,6 +4,7 @@ import math
 import time
 import pandas as pd
 import  streamlit_toggle as tog
+from lxml import html
 
 # Database connections
 @st.cache_resource
