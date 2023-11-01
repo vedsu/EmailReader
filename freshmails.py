@@ -418,7 +418,7 @@ def display(batch_size, start_index):
                     with col2:
                         with st.expander(" View Details"):
                     
-                            st.write("Content:", doc.get("description"))
+                            st.write("Content:", html.fromstring(doc.get("description")).text_content())
                     
                             additional_info = st.text_area("Additional Information:",doc.get("comments"),height=100,key=f"additional_info_{doc['_id']}")
                                         
