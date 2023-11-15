@@ -418,8 +418,19 @@ def display(batch_size, start_index):
                     
                     with col2:
                         with st.expander(" View Details"):
+                            try:
+                               description = doc.get("description")
+                               # Check if description is not None before proceeding
+                               if description is not None:
+                                  content_text = html.fromstring(description).text_content()
+                                  st.write("Content:", content_text)
+                               else:
+                                  st.write(" ")
+            
+                            except Exception as e:
+                                 st.error(f"An error occurred: {e}")
                     
-                            st.write("Content:", html.fromstring(doc.get("description")).text_content())
+                            # st.write("Content:", html.fromstring(doc.get("description")).text_content())
                     
                             additional_info = st.text_area("Additional Information:",doc.get("comments"),height=100,key=f"additional_info_{doc['_id']}")
                                         
